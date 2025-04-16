@@ -33,8 +33,9 @@ The project follows a modular and clean architecture, organized as follows:
 ### **HabitTracker.sln** (Solution file)
 The solution contains the following projects:
 
-**HabitTracker (API Project)**
-├── **Endpoints/**                                 # API Endpoints (Minimal API)
+```text
+HabitTracker (API Project)
+├── Endpoints/                                # API Endpoints (Minimal API)
 │   ├── EndpointsExtension.cs                 # Calls specific endpoint extensions
 │   ├── Habits/                               # Endpoints related to habits
 │   │   ├── HabitsEndpointExtension.cs        # Maps all habit-related endpoints
@@ -44,58 +45,59 @@ The solution contains the following projects:
 │   │   ├── GetHabitEndpoint.cs               # GET endpoint to get a habit
 │   │   ├── UpdateHabitEndpoint.cs            # PUT endpoint to update a habit
 │   ├── ApiVersioning.cs                      # Configures API versioning.
-├── **Mapping/**                                  # Data transformation and validation   
+├── Mapping/                                  # Data transformation and validation   
 │   ├── ContractMapping.cs                    # Maps all the responses and requests
 │   ├── ValidationMappingMiddleware.cs        # Middleware for request validation
-├── **Auth/**                                    # Authentication 
+├── Auth/                                     # Authentication 
 │   ├── AuthConstants.cs                      # Defines authorization constants (e.g., policy names, claim types).
-├── **Swagger/**                                  # Swagger configuration for API documentation   
+├── Swagger/                                  # Swagger configuration for API documentation   
 │   ├── ConfigureSwaggerOptions.cs            # Configures Swagger options
 │   ├── SwaggerDefaultValues.cs               # Sets default values for Swagger documentation
-├── **Properties/**                               # Configuration files
+├── Properties/                               # Configuration files
 │   ├── launchsettings.json                   # Configures app launch settings
-├── **appsettings.json**                          # Main configuration file for application settings.
-│   ├── appsettings.Development.json           #  Development-specific settings
-└── **Program.cs**                                # Application entry point, configuring services and middleware.
+├── appsettings.json                          # Main configuration file for application settings.
+│   ├── appsettings.Development.json          #  Development-specific settings
+└── Program.cs                                # Application entry point, configuring services and middleware.
 
-**Habits.Application (Class Library - Application Logic)**
-├── **Database/**                                 # Handles the database context
+Habits.Application (Class Library - Application Logic)
+├── Database/                                 # Handles the database context
 │   ├── HabitTrackerDbContext.cs              # Defines the database context for HabitTracker
-├── **Migrations/**                               # Contains database migrations for the initial and subsequent changes
+├── Migrations/                               # Contains database migrations for the initial and subsequent changes
 │   ├── 20250414120958_Initial.cs             # The first migration to create the initial tables
 │   ├── 20250414132235_SeedingFix.cs          # Migration that adds initial seed data to the "Habits" table
 │   ├── HabitTrackerDbContextModelSnapshot    # Snapshot of the model after migrations
-├── **Models/**                                   # Contains domain models used in the application
+├── Models/                                   # Contains domain models used in the application
 │   ├── Habit.cs                              # Domain model representing a Habit entity
-├── **Repositories/**                             # Interfaces and implementations for data access
+├── Repositories/                             # Interfaces and implementations for data access
 │   ├── HabitRepository.cs                    # Implementation of the habit repository for data access
 │   ├── IHabitRepository.cs                   # Interface for habit repository
-├── **Services/**                                # Business logic
+├── Services/                                 # Business logic
 │   ├── HabitService.cs                       # Service handling core logic
 │   ├── IHabitService.cs                      # Interface for habit service
-├── **Validators/**                              # Validation logic for data consistency
+├── Validators/                               # Validation logic for data consistency
 │   ├── HabitValidator.cs                     # FluentValidation class for validating Habit data
-├── **ApplicationServiceCollectionExtensions.cs** # Provides extension methods for registering services
-└── **ApplicationMarker.cs**                     # Marker class for identifying the application layer within the project
+├── ApplicationServiceCollectionExtensions.cs # Provides extension methods for registering services
+└── ApplicationMarker.cs                      # Marker class for identifying the application layer within the project
 
 Habits.Contracts (Class Library - API Contracts)
-├── **Requests/**                                # Contains request models used in the API endpoints
+├── Requests/                                 # Contains request models used in the API endpoints
 │   ├── CreateHabitRequest.cs                 # Model representing data for creating a new habit
 │   ├── UpdateHabitRequest.cs                 # Model representing data for updating an existing habit
-├── **Responses/**                               # Contains response models returned by the API
+├── Responses/                                # Contains response models returned by the API
 │   ├── HabitResponse.cs                      # Model representing the response structure for a single habit
 │   ├── HabitsResponse.cs                     # Model representing the response structure for multiple habits
 │   ├── ValidationFailureResponse.cs          # Model representing validation failure responses (for error handling)
 
-**Identity.Api (Token Generator Project)**
-├── **Controllers/**                              # Contains the API controllers
+Identity.Api (Token Generator Project)
+├── Controllers/                              # Contains the API controllers
 │   ├── IdentityController.cs                 # Handles requests for token generation
-├── **TokenGenerationRequest.cs**                 # Defines the structure of the request body for token generation
-├── **Properties/**                               # Configuration files
+├── TokenGenerationRequest.cs                 # Defines the structure of the request body for token generation
+├── Properties/                               # Configuration files
 │   ├── launchsettings.json                   # Configures app launch settings
-├── **appsettings.json**                          # Main configuration file for application settings.
-│   ├── appsettings.Development.json           #  Development-specific settings
-└── **Program.cs**                                # Application entry point
+├── appsettings.json                          # Main configuration file for application settings.
+│   ├── appsettings.Development.json          #  Development-specific settings
+└── Program.cs                                # Application entry point
+```
 
 ## 🛠️ Database Setup
 
