@@ -4,6 +4,7 @@ using Habits.Application.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Habits.Application.Migrations
 {
     [DbContext(typeof(HabitTrackerDbContext))]
-    partial class HabitTrackerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250417160115_CreateUsersTable")]
+    partial class CreateUsersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,7 +97,7 @@ namespace Habits.Application.Migrations
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
                             Email = "user@example.com",
-                            PasswordHash = "$2a$11$GZ.ursK2W8E3HD357j4hFOoC8SdU/saarJaKsBR6dJm/K6a8l5FfK"
+                            PasswordHash = "somehashedpassword"
                         });
                 });
 #pragma warning restore 612, 618

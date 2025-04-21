@@ -1,5 +1,5 @@
 ﻿using Habits.Application.Services;
-using Habits.Contracts.Auth;
+using HabitTracker.Auth;
 using Habits.Contracts.Responses;
 using HabitTracker.Mapping;
 
@@ -12,9 +12,17 @@ public static class GetAllHabitsEndpoint
     {
         app.MapGet("/api/habits", async (
             IHabitService habitService,
+            HttpContext context,
             CancellationToken token) =>
         {
-            var habits = await habitService.GetAllAsync(token);
+            var userId = context.GetUserId(); // Get the user ID from the context
+
+            if (userId is null)
+            {
+                return Results.Unauthorized();
+            }
+
+            var habits = await habitService.GetAllAsync(userId.Value, token);
 
             var response = habits.MapToResponse();
 
@@ -27,9 +35,17 @@ public static class GetAllHabitsEndpoint
 
         app.MapGet("/api/habits", async (
             IHabitService habitService,
+            HttpContext context,
             CancellationToken token) =>
         {
-            var habits = await habitService.GetAllAsync(token);
+            var userId = context.GetUserId(); // Get the user ID from the context
+
+            if (userId is null)
+            {
+                return Results.Unauthorized();
+            }
+
+            var habits = await habitService.GetAllAsync(userId.Value, token);
 
             var response = habits.MapToResponse();
 

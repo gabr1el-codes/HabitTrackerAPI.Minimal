@@ -2,7 +2,7 @@ using System.Text;
 using Asp.Versioning;
 using Habits.Application;
 using Habits.Application.Database;
-using Habits.Contracts.Auth;
+using HabitTracker.Auth;
 using HabitTracker.Endpoints;
 using HabitTracker.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

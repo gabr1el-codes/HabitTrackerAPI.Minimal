@@ -12,19 +12,21 @@ public class HabitRepository : IHabitRepository
         _dbContext = dbContext;
     }
 
-    public async Task<bool> AddAsync(Habit habit, CancellationToken token = default)
+    public async Task<bool> AddAsync(Guid userId, Habit habit, CancellationToken token = default)
     {
-        
+        habit.UserID = userId; // Set the UserID for the new habit
+
         await _dbContext.Habits.AddAsync(habit, token); // Add the new habit to the database
         await _dbContext.SaveChangesAsync(token); // Save changes asynchronously to the database
 
         return true; // Return true to indicate the habit was successfully added
-    }
+    } 
 
-    public async Task<bool> DeleteAsync(Guid id, CancellationToken token = default)
+    public async Task<bool> DeleteAsync(Guid id, Guid userId, CancellationToken token = default)
     {
-        var habit = await _dbContext.Habits.FindAsync(id, token); // Find the habit by id
-
+        var habit = await _dbContext.Habits
+            .FirstOrDefaultAsync(h => h.Id == id && h.UserID == userId, token); // Find the habit by id and userId
+         
         if (habit == null)
         {
             return false; // Habit not found, return false
@@ -36,20 +38,26 @@ public class HabitRepository : IHabitRepository
         return true; // Return true if the habit was deleted successfully
     }
 
-    public async Task<IEnumerable<Habit>> GetAllAsync(CancellationToken token = default)
+    public async Task<IEnumerable<Habit>> GetAllAsync(Guid userId, CancellationToken token = default)
     {
-        return await _dbContext.Habits.ToListAsync(token); // Return all habits 
+        return await _dbContext.Habits
+            .Where(h => h.UserID == userId) // Filter habits by userId
+            .ToListAsync(token); // Return all habits 
     }
 
-    public async Task<Habit?> GetByIdAsync(Guid id, CancellationToken token = default)
+    public async Task<Habit?> GetByIdAsync(Guid id, Guid userId, CancellationToken token = default)
     {
-        return await _dbContext.Habits.FindAsync(id, token); // returns the habit with the specified id or null if not found
+        return await _dbContext.Habits
+            .FirstOrDefaultAsync(h => h.Id == id && h.UserID == userId, token);
     }
 
     /// Update the habit
-    public async Task<Habit?> UpdateAsync(Guid id, Habit habit, CancellationToken token = default)
+    public async Task<Habit?> UpdateAsync(Guid id, Guid userId,  Habit habit, CancellationToken token = default)
     {        
-        var existingHabit = await _dbContext.Habits.FindAsync(id, token); // Find the habit by id
+        var existingHabit = await _dbContext.Habits
+            .Where(h => h.Id == id && h.UserID == userId) // Find the habit by id and userId
+            .FirstOrDefaultAsync(token); // Get the first matching habit
+                                         //It's the same as FirstOrDefaultAsync(h => h.Id == id && h.UserID == userId, token);
 
         if (existingHabit == null)        
             return null; // Return null if the habit does not exist

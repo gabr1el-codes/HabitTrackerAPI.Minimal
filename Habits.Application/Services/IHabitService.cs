@@ -5,9 +5,9 @@ namespace Habits.Application.Services;
 
 public interface IHabitService
 {
-    Task<IEnumerable<Habit>> GetAllAsync(CancellationToken token = default);
-    Task<Habit?> GetByIdAsync(Guid id, CancellationToken token = default);
-    Task<bool> AddAsync(Habit habit, CancellationToken token = default);
-    Task<Habit?> UpdateAsync(Guid id, Habit habit, CancellationToken token = default);
-    Task<bool> DeleteAsync(Guid id, CancellationToken token = default);
+    Task<IEnumerable<Habit>> GetAllAsync(Guid userId, CancellationToken token = default);
+    Task<Habit?> GetByIdAsync(Guid id, Guid userId, CancellationToken token = default);
+    Task<bool> AddAsync(Guid userId, Habit habit, CancellationToken token = default);
+    Task<Habit?> UpdateAsync(Guid id, Guid userId, Habit habit, CancellationToken token = default);
+    Task<bool> DeleteAsync(Guid id, Guid userId, CancellationToken token = default);
 }

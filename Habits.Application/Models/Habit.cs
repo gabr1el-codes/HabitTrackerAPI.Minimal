@@ -7,4 +7,5 @@ public class Habit
     public string Description { get; set; }
     public bool IsCompleted { get; set; }
     public DateTime? CompletedAt { get; set; }
+    public Guid UserID { get; set; }
 }

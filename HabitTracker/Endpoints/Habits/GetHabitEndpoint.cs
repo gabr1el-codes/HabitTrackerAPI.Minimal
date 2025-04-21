@@ -1,5 +1,5 @@
 ﻿using Habits.Application.Services;
-using Habits.Contracts.Auth;
+using HabitTracker.Auth;
 using Habits.Contracts.Responses;
 using HabitTracker.Mapping;
 
@@ -13,9 +13,17 @@ public static class GetHabitEndpoint
         app.MapGet("/api/habits/{id}", async (
             Guid id, 
             IHabitService habitService,
+            HttpContext context,
             CancellationToken token) =>
         {
-            var habit = await habitService.GetByIdAsync(id, token);
+            var userId = context.GetUserId(); // Get the user ID from the context
+
+            if (userId is null)
+            {
+                return Results.Unauthorized();
+            }
+
+            var habit = await habitService.GetByIdAsync(id, userId.Value, token);
             if (habit is null)
             {
                 return Results.NotFound();

@@ -1,8 +1,9 @@
 ﻿using Habits.Application.Services;
-using Habits.Contracts.Auth;
+using HabitTracker.Auth;
 using Habits.Contracts.Requests;
 using Habits.Contracts.Responses;
 using HabitTracker.Mapping;
+using Habits.Application.Models;
 
 namespace HabitTracker.Endpoints.Habits;
 
@@ -13,12 +14,20 @@ public static class CreateHabitEndpoint
     {
         app.MapPost("/api/habits", async (
             CreateHabitRequest request, 
-            IHabitService habitService, 
+            IHabitService habitService,
+            HttpContext context,
             CancellationToken token) =>
         {
+            var userId = context.GetUserId(); // Get the user ID from the context  
+
+            if (userId is null)
+            {
+                return Results.Unauthorized();
+            }
+
             var habit = request.MapToHabit(); // Map the request to a Habit object
 
-            await habitService.AddAsync(habit, token); // Add the habit to the service
+            await habitService.AddAsync(userId.Value, habit, token); // Add the habit to the service
 
             var response = habit.MapToResponse(); // Map the habit to a response object
 

@@ -1,5 +1,5 @@
 ﻿using Habits.Application.Services;
-using Habits.Contracts.Auth;
+using HabitTracker.Auth;
 using HabitTracker.Mapping;
 
 namespace HabitTracker.Endpoints.Habits;
@@ -12,10 +12,18 @@ public static class DeleteHabitEndpoint
     {
         app.MapDelete("/api/habits/{id}", async (
             Guid id, 
-            IHabitService habitService, 
+            IHabitService habitService,
+            HttpContext context,
             CancellationToken token) =>
         {
-            var delete = await habitService.DeleteAsync(id, token);
+            var userId = context.GetUserId(); // Get the user ID from the context  
+
+            if (userId is null)
+            {
+                return Results.Unauthorized();
+            }
+
+            var delete = await habitService.DeleteAsync(id, userId.Value, token);
             if (!delete)
             {
                 return Results.NotFound();

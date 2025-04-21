@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Habits.Application.Migrations
 {
     [DbContext(typeof(HabitTrackerDbContext))]
-    [Migration("20250414132235_SeedingFix")]
-    partial class SeedingFix
+    [Migration("20250417164553_ModifyTablePassword")]
+    partial class ModifyTablePassword
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,6 +45,9 @@ namespace Habits.Application.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.ToTable("Habits");
@@ -55,14 +58,46 @@ namespace Habits.Application.Migrations
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             Description = "Drink 2L of water per day",
                             IsCompleted = false,
-                            Name = "Drink water"
+                            Name = "Drink water",
+                            UserID = new Guid("33333333-3333-3333-3333-333333333333")
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
                             Description = "30 minutes of exercise per day",
                             IsCompleted = false,
-                            Name = "Exercise"
+                            Name = "Exercise",
+                            UserID = new Guid("33333333-3333-3333-3333-333333333333")
+                        });
+                });
+
+            modelBuilder.Entity("Habits.Application.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
+                            Email = "user@example.com",
+                            PasswordHash = "$2a$11$GZ.ursK2W8E3HD357j4hFOoC8SdU/saarJaKsBR6dJm/K6a8l5FfK"
                         });
                 });
 #pragma warning restore 612, 618
