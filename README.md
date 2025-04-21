@@ -12,6 +12,7 @@ A modular and scalable Habit Tracker REST API built with ASP.NET Core Minimal AP
 - **JWT Authentication and Authorization**
 - **FluentValidation** for validation
 - **Serilog**
+- **BCrypt**
 - **API Versioning**
 - **Swagger / OpenAPI**
 - **Postman** for testing
@@ -23,10 +24,12 @@ A modular and scalable Habit Tracker REST API built with ASP.NET Core Minimal AP
 - ✅ Full CRUD support for managing habits
 - ✅ Clean separation of concerns (modular & scalable architecture)
 - ✅ Middleware pipeline for validation and global error handling
-- ✅ Secure authentication and authorization with JWT
+- ✅ Secure user registration with password hashing
+- ✅ Login with stateless JWT authentication and custom claims
+- ✅ Role-based authorization and user-specific data filtering
 - ✅ API versioning using custom media types
 - ✅ Interactive API documentation with Swagger / OpenAPI
-
+  
 
 ## 🧱 Project Structure
 The project follows a modular and clean architecture, organized as follows:
@@ -50,7 +53,8 @@ HabitTracker (API Project)
 │   ├── ContractMapping.cs                    # Maps all the responses and requests
 │   ├── ValidationMappingMiddleware.cs        # Middleware for request validation
 ├── Auth/                                     # Authentication 
-│   ├── AuthConstants.cs                      # Defines authorization constants (e.g., policy names, claim types).
+│   ├── AuthConstants.cs                      # Defines authorization constants (e.g., policy names, claim types)
+│   ├── IdentityExtensions.cs                 # Gets the user ID from the claims
 ├── Swagger/                                  # Swagger configuration for API documentation   
 │   ├── ConfigureSwaggerOptions.cs            # Configures Swagger options
 │   ├── SwaggerDefaultValues.cs               # Sets default values for Swagger documentation
@@ -64,11 +68,10 @@ Habits.Application (Class Library - Application Logic)
 ├── Database/                                 # Handles the database context
 │   ├── HabitTrackerDbContext.cs              # Defines the database context for HabitTracker
 ├── Migrations/                               # Contains database migrations for the initial and subsequent changes
-│   ├── 20250414120958_Initial.cs             # The first migration to create the initial tables
-│   ├── 20250414132235_SeedingFix.cs          # Migration that adds initial seed data to the "Habits" table
 │   ├── HabitTrackerDbContextModelSnapshot    # Snapshot of the model after migrations
 ├── Models/                                   # Contains domain models used in the application
 │   ├── Habit.cs                              # Domain model representing a Habit entity
+│   ├── User.cs                               # Domain model representing a User entity
 ├── Repositories/                             # Interfaces and implementations for data access
 │   ├── HabitRepository.cs                    # Implementation of the habit repository for data access
 │   ├── IHabitRepository.cs                   # Interface for habit repository
@@ -92,7 +95,9 @@ Habits.Contracts (Class Library - API Contracts)
 Identity.Api (Token Generator Project)
 ├── Controllers/                              # Contains the API controllers
 │   ├── IdentityController.cs                 # Handles requests for token generation
-├── TokenGenerationRequest.cs                 # Defines the structure of the request body for token generation
+├── Controllers/                              # Contains the API controllers
+│   ├── TokenGenerationRequest.cs             # Defines the structure of the request body for token generation
+│   ├── UserRegistrationRequest.cs            # Defines the structure of the request body for user registration 
 ├── Properties/                               # Configuration files
 │   ├── launchsettings.json                   # Configures app launch settings
 ├── appsettings.json                          # Main configuration file for application settings.
@@ -111,9 +116,10 @@ The project uses **SQL Server** (or **SQL Express**) for database management.
 🔐 Authentication
 This API uses JWT (JSON Web Token) for authentication.
 
-Token generation is handled by a separate project called Identity.Api, which is responsible for user login and token issuing.
+Token generation is handled by a separate project called Identity.Api, which is responsible for user registration, login and token issuing.
 
-To test authentication-protected routes, make sure you have the Identity.Api running and use the token it returns in the Authorization header.
+Make sure you have the Identity.Api running and you register an account, login and then use the token it returns in the Authorization header.
+
 
 ## 📌 Versioning
 Available versions: v1.0, v2.0
